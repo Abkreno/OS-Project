@@ -1,0 +1,19 @@
+bochs -f conf.bxrc  //then type c in the command line
+dd if=/dev/zero of=floppya.img bs=512 count=2880 // fill with zeros
+dd if=bootload of=floppya.img bs=512 count=1 conv=notrunc  //copy to floppya.img
+
+now create a file kernel.c
+and type ur code in it 
+the main should be :
+
+int main(void){
+
+}
+
+//compiling
+bcc -ansi -c -o kernel.o kernel.c
+as86 kernel.asm -o kernel_asm.o
+ld86 -o kernel -d kernel.o kernel_asm.o
+
+//then copy
+dd if=kernel of=floppya.img bs=512 conv=notrunc seek=3
