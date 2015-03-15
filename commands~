@@ -17,6 +17,3 @@ ld86 -o kernel -d kernel.o kernel_asm.o
 
 //then copy
 dd if=kernel of=floppya.img bs=512 conv=notrunc seek=3
-
-//type the following to put message.txt at sector 30:
-dd if=message.txt of=floppya.img bs=512 count=1 seek=30 conv=notrunc
