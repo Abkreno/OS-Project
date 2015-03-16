@@ -1,6 +1,7 @@
 void printString(char*);
 void readString(char*);
 void readSector(char*, int);
+void handleInterrupt21(int, int, int, int);
 int div(int, int);
 int mod(int, int);
 
@@ -9,18 +10,27 @@ char buffer[512];
 
 main( void )
 {
-	/*
-	printString("Enter a line: \0");
-	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "to print new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	/*	
 	readString(line);
 	printString(line);
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 	*/
+	
+	/*
 	readSector(buffer, 30);
     printString(buffer);
+	*/
+	
+	printString("Enter a line:\n\0");
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	
+	makeInterrupt21();
+	
+	interrupt(0x21,1,line,0,0);
+	interrupt(0x21,0,line,0,0);
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	
 	while(1);
-
 }
 
 void printString(char* chars)
@@ -87,6 +97,19 @@ void readSector(char* buffer, int sector)
     CX = CH*256 + CL;
     DX = DH*256 + DL;
 	interrupt(0x13, 0x201, buffer, CX, DX);
+}
+
+void handleInterrupt21(int ax, int bx, int cx, int dx)
+{
+	if(ax == 0){
+		printString(bx);
+	}else if(ax == 1){
+		readString(bx);
+	}else if(ax == 2){
+		readSector(bx);
+	}else{
+		printString("Error AX value should be < 3\0");
+	}
 }
 
 int div(int a, int b)
