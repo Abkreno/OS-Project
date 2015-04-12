@@ -16,12 +16,12 @@ main( void )
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 	*/
 	
-	/*
-	readSector(buffer, 30);
-    printString(buffer);
-	*/
 	
-	printString("Enter a line:\n\0");
+	readSector(buffer, 30);
+    	printString(buffer);
+	
+	
+	/*printString("Enter a line:\n\0");
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 	
 	makeInterrupt21();
@@ -29,7 +29,7 @@ main( void )
 	interrupt(0x21,1,line,0,0);
 	interrupt(0x21,0,line,0,0);
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
-	
+	*/
 	while(1);
 }
 
