@@ -1,12 +1,16 @@
 void printString(char*);
 void readString(char*);
 void readSector(char*, int);
+void readFile(char* , char*);
 void handleInterrupt21(int, int, int, int);
+void println();
 int div(int, int);
 int mod(int, int);
 
 char line[82];
-char buffer[512];
+char buffer[13312]; /*this is the maximum size of a file*/
+char directory[16][32];
+char sector[512]; // temp array to read sectors on
 
 main( void )
 {
@@ -16,10 +20,10 @@ main( void )
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 	*/
 	
-	
-	readSector(buffer, 2);
-    printString(buffer);
-	
+	readSector(sector,2);
+	makeInterrupt21();
+	interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
+	interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
 	
 	/*printString("Enter a line:\n\0");
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
@@ -35,13 +39,17 @@ main( void )
 
 void printString(char* chars)
 {
-
 	int i;
 	for (i = 0; chars[i] != '\0'; i++){
 		int currChar = chars[i];
 		interrupt(0x10, 0xE*256+currChar, 0, 0, 0);
-	};
-	
+	};	
+}
+
+void println()
+{
+	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 }
 
 void readString(char* chars)
@@ -99,6 +107,38 @@ void readSector(char* buffer, int sector)
 	interrupt(0x13, 0x201, buffer, CX, DX);
 }
 
+void readFile(char* buffer, char* fileName)
+{
+	int i,j,entry,sectorNum,count;
+	int flag = 0;
+	
+	for (i = 0; i < 16; i++){
+		for (j = 0; j < 32; j++){
+			directory[i][j] = sector[i*32 + j];
+		}
+	};
+	
+	for (i = 0; i < 16; i++){
+		for (j = 0; j < 6; j++){
+			if(directory[i][j]!=fileName[j])
+				break;	
+		}
+		if(j == 6){
+			flag = 1;
+			entry = i;
+			break;
+		}
+	};
+	
+	if(flag==0)return;
+	count = 0;
+	for (j = 6; j < 32; j++){
+		sectorNum = directory[entry][j];
+		readSector(buffer+count,sectorNum);	
+		count = count + 512;
+	}
+}
+
 void handleInterrupt21(int ax, int bx, int cx, int dx)
 {
 	if(ax == 0){
@@ -107,6 +147,8 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		readString(bx);
 	}else if(ax == 2){
 		readSector(bx);
+	}else if(ax == 3){
+		readFile(cx,bx);
 	}else{
 		printString("Error AX value should be < 3\0");
 	}
