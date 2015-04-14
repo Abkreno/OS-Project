@@ -20,7 +20,6 @@ main( void )
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
 	*/
 	
-	readSector(sector,2);
 	makeInterrupt21();
 	interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
 	interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
@@ -40,7 +39,7 @@ main( void )
 void printString(char* chars)
 {
 	int i;
-	for (i = 0; chars[i] != '\0'; i++){
+	for (i = 0; chars[i] != '\0' && i<6; i++){
 		int currChar = chars[i];
 		interrupt(0x10, 0xE*256+currChar, 0, 0, 0);
 	};	
@@ -111,18 +110,21 @@ void readFile(char* buffer, char* fileName)
 {
 	int i,j,entry,sectorNum,count;
 	int flag = 0;
-	
+	readSector(sector,2);
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 32; j++){
 			directory[i][j] = sector[i*32 + j];
 		}
 	};
-	
+			
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
-			if(directory[i][j]!=fileName[j])
+			printString(sector[i*32 + j]+"\0");
+			if(sector[i*32 + j]!=fileName[j]){
 				break;	
-		}
+			}
+		};
+		println();	
 		if(j == 6){
 			flag = 1;
 			entry = i;
@@ -130,7 +132,10 @@ void readFile(char* buffer, char* fileName)
 		}
 	};
 	
-	if(flag==0)return;
+	if(flag==0){
+		return;
+	}
+
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = directory[entry][j];
