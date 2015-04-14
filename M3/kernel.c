@@ -22,7 +22,7 @@ main( void )
 	
 	makeInterrupt21();
 	interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
-	interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
+	//interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
 	
 	/*printString("Enter a line:\n\0");
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
@@ -110,21 +110,20 @@ void readFile(char* buffer, char* fileName)
 {
 	int i,j,entry,sectorNum,count;
 	int flag = 0;
+	printString("hello\0");
 	readSector(sector,2);
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 32; j++){
 			directory[i][j] = sector[i*32 + j];
-		}
+		};
 	};
 			
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
-			printString(sector[i*32 + j]+"\0");
 			if(sector[i*32 + j]!=fileName[j]){
 				break;	
 			}
 		};
-		println();	
 		if(j == 6){
 			flag = 1;
 			entry = i;
@@ -135,6 +134,8 @@ void readFile(char* buffer, char* fileName)
 	if(flag==0){
 		return;
 	}
+	println();	
+	printString("hello\0");
 
 	count = 0;
 	for (j = 6; j < 32; j++){
