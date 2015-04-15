@@ -10,3 +10,5 @@ kernel.o
 kernel_asm.o
 kernel
 loadFile
+lib.o
+shell.o
