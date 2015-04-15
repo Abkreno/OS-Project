@@ -4,6 +4,7 @@ void readSector(char*, int);
 void readFile(char* , char*);
 void executeProgram(char*, int);
 void handleInterrupt21(int, int, int, int);
+void terminate();
 void println();
 int div(int, int);
 int mod(int, int);
@@ -35,9 +36,8 @@ main( void )
 	*/
 
 	makeInterrupt21();
-	interrupt(0x21, 4, "tstprg\0", 0x2000, 0);
+	interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
 	while(1);
-
 }
 
 void printString(char* chars)
@@ -159,6 +159,12 @@ void executeProgram(char* name,int segment) {
 	launchProgram(segment);
 }
 
+void terminate()
+{
+	printString("Here Man Whats Up\0");
+	while(1);
+}
+
 void handleInterrupt21(int ax, int bx, int cx, int dx)
 {
 	if(ax == 0){
@@ -171,8 +177,10 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		readFile(cx,bx);
 	}else if(ax == 4){
 		executeProgram(bx,cx);
+	}else if(ax == 5){
+		terminate();
 	}else{
-		printString("Error AX value should be < 5\0");
+		printString("Error AX value should be < 6\0");
 	}
 }
 
