@@ -163,7 +163,14 @@ void executeProgram(char* name,int segment) {
 
 void terminateProgram()
 {
-	interrupt(0x21,4,"shell\0",0x2000,0);
+	char name[6];
+	name[0] = 's';
+	name[1] = 'h';
+	name[2] = 'e';
+	name[3] = 'l';
+	name[4] = 'l';
+	name[5] = '\0';
+	interrupt(0x21,4,name,0x2000,0);
 }
 
 void handleInterrupt21(int ax, int bx, int cx, int dx)
