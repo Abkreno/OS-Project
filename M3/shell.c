@@ -10,8 +10,8 @@ main( void ) {
     interrupt(0x21,1,command,0,0);
 
     //check for command avaliablility
-    if(0) {
-      interrupt(0x21,0,command + "command not found\0",0,0);
+    if(1) {
+      interrupt(0x21,0,"command not found\0",0,0);
     }
 
   }
