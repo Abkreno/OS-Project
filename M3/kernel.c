@@ -20,9 +20,9 @@ main( void )
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 	*/
 
-	makeInterrupt21();
-	interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
-	interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
+	// makeInterrupt21();
+	// interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
+	// interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
 
 	/*printString("Enter a line:\n\0");
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
@@ -33,6 +33,11 @@ main( void )
 	interrupt(0x21,0,line,0,0);
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 	*/
+
+	makeInterrupt21();
+	interrupt(0x21, 4, "tstprg\0", 0x2000, 0);
+	while(1);
+
 	while(1);
 }
 
