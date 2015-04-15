@@ -147,7 +147,7 @@ void executeProgram(char* name,int segment) {
 	while(buffer[i] != "\0") {
 		putInMemory(segment,base,buffer[i]);
 		i = i + 1 ;
-		base = bsae + 1 ;
+		base = base + 1 ;
 	}
 	launchProgram(segment);
 
