@@ -136,6 +136,8 @@ void readFile(char* buffer, char* fileName)
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = sector[entry*32+j];
+		if(sectorNum == 0)
+			break;
 		readSector(buffer+count,sectorNum);
 		count = count + 512;
 	}
@@ -149,12 +151,12 @@ void executeProgram(char* name,int segment) {
 
 	readFile(buffer,name);
 
-	while(buffer[i] != "\0") {
-		putInMemory(segment,base+offset,buffer[i++]);
+	while(buffer[i] != "\0"&& i<512) {
+		putInMemory(segment,offset,buffer[i++]);
 		offset++;
 	}
-	launchProgram(segment);
 
+	launchProgram(segment);
 }
 
 void handleInterrupt21(int ax, int bx, int cx, int dx)
