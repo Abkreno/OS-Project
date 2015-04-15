@@ -20,9 +20,10 @@ main( void ) {
       i++;
       argPtr++;
     }
-    
     if(command[i]==' ')
       argPtr++;
+
+  	command[i] = '\0';
 
     interrupt(0x21,0,argPtr,0,0);
     interrupt(0x21,10,0,0,0);
