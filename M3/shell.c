@@ -1,10 +1,9 @@
 int equals(char*,char*);
+char* command;
+char* argPtr;
 
-main( void ) {
-  char* command;
-  char* argPtr;
-  int i ;
-
+main( void ) { 
+  int i;
   while(1) {
 
     //prompt
@@ -12,18 +11,22 @@ main( void ) {
 
     //reading a command
     interrupt(0x21,1,command,0,0);
-
+   
     //pointing to the arg beginning
-    argPtr = &command;
-    i = 0 ;
+    argPtr = command;
+    i = 0;
 
     while(command[i] != '\0' && command[i] != ' ') {
       i++;
       argPtr++;
     }
+    
+    if(command[i]==' ')
+      argPtr++;
 
     interrupt(0x21,0,argPtr,0,0);
-
+    interrupt(0x21,10,0,0,0);
+    
     if(equals(command,"view\0")) {
       char* file;
       interrupt(0x21,3,file,argPtr,0); // readFile
