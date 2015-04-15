@@ -38,7 +38,6 @@ main( void )
 	interrupt(0x21, 4, "tstprg\0", 0x2000, 0);
 	while(1);
 
-	while(1);
 }
 
 void printString(char* chars)
