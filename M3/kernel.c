@@ -161,7 +161,6 @@ void executeProgram(char* name,int segment) {
 
 void terminateProgram()
 {
-	printString("Here Man Whats Up\0");
 	while(1);
 }
 
