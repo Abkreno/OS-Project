@@ -35,9 +35,13 @@ main( void )
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 	*/
 
+	// makeInterrupt21();
+	// interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
+	// while(1);
+
 	makeInterrupt21();
-	interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
-	while(1);
+	interrupt(0x21,4,"shell\0",0x2000,0);
+
 }
 
 void printString(char* chars)
@@ -161,7 +165,7 @@ void executeProgram(char* name,int segment) {
 
 void terminateProgram()
 {
-	while(1);
+	interrupt(0x21,4,"shell\0",0x2000,0);
 }
 
 void handleInterrupt21(int ax, int bx, int cx, int dx)
