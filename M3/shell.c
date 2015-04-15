@@ -13,7 +13,7 @@ main( void ) {
     //reading a command
     interrupt(0x21,1,command,0,0);
     splitted = str_split(command , ' ');
-
+       
     if(equals(splitted[0],"view\0")) {
       interrupt(0x21,3,splitted[1],0,0); // readFile
     }else if(equals(splitted[0],"execute\0")){
