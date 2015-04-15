@@ -182,6 +182,9 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		executeProgram(bx,cx);
 	}else if(ax == 5){
 		terminateProgram();
+	}
+	else if (ax == 10) {
+		println();
 	}else{
 		printString("Error AX value should be < 6\0");
 	}
