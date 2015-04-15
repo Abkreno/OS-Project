@@ -11,8 +11,13 @@ main( void ) {
     //reading a command
     interrupt(0x21,1,command,0,0);
 
-    //check for command avaliablility
-    if(1) {
+    char** splitted = split(command);
+    if(equals(splitted[0],"view")) {
+      interrupt(0x21,3,splitted[1],0,0); // readFile
+    }else if(equals(splitted[0],"execute")){
+      interrupt(0x21,4,splitted[1],0x2000,0); // executeProgram
+    }
+    else{
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
     }
