@@ -3,11 +3,10 @@ int strlen(char*);
 char** str_split(char*, char);
 
 main( void ) {
-
+  char* command;
+  char** splitted;
   while(1) {
-    char* command;
-    char** splitted;
-
+    
     //prompt
     interrupt(0x21,0,"shell$\0",0,0);
 
@@ -15,9 +14,9 @@ main( void ) {
     interrupt(0x21,1,command,0,0);
     splitted = str_split(command , ' ');
 
-    if(equals(splitted[0],"view")) {
+    if(equals(splitted[0],"view\0")) {
       interrupt(0x21,3,splitted[1],0,0); // readFile
-    }else if(equals(splitted[0],"execute")){
+    }else if(equals(splitted[0],"execute\0")){
       interrupt(0x21,4,splitted[1],0x2000,0); // executeProgram
     }else{
       interrupt(0x21,0,"command not found\0",0,0);

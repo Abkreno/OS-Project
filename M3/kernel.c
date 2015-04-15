@@ -73,13 +73,12 @@ void readString(char* chars)
 			interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 			chars[index] = 0x0;                    //end of string
 			break;
-
-		}else if(x == backspace){
+		}else if(x == backspace && index!=0){
 			interrupt(0x10, 0xE*256+x, 0, 0, 0);     // print backspace
 			interrupt(0x10, 0xE*256+0x20, 0, 0, 0);  // print space
 			interrupt(0x10, 0xE*256+x, 0, 0, 0);     // print backspace again
-			index--;
-		}else if (index < 80) {
+		    index--;
+		}else if (x != backspace && index < 80) {
 			interrupt(0x10, 0xE*256+x, 0, 0, 0);
 			chars[index++] = x;
 		}
