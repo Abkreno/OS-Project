@@ -1,6 +1,7 @@
 int equals(char*,char*);
-char* command;
-char* argPtr;
+char command[81];
+char argPtr[81];
+char file[13312];
 
 main( void ) {
   int i,j;
@@ -24,13 +25,9 @@ main( void ) {
     	while((argPtr[j++]=command[i++]) != '\0');
     }
 
-
-    interrupt(0x21,0,argPtr,0,0);
-    interrupt(0x21,10,0,0,0);
-
     if(equals(command,"view\0")) {
-      char* file;
       interrupt(0x21,3,argPtr,file,0); // readFile
+      file[13312] = '\0';
       interrupt(0x21,0,file,0,0); // print File
     }else if(equals(command,"execute\0")){
       interrupt(0x21,4,argPtr,0x2000,0); // executeProgram
