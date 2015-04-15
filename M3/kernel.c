@@ -2,6 +2,7 @@ void printString(char*);
 void readString(char*);
 void readSector(char*, int);
 void readFile(char* , char*);
+void executeProgram(char*, int);
 void handleInterrupt21(int, int, int, int);
 void println();
 int div(int, int);
@@ -136,6 +137,11 @@ void readFile(char* buffer, char* fileName)
 	}
 }
 
+void executeProgram(char* name, int segment)
+{
+	readFile(buffer,name);
+}
+
 void handleInterrupt21(int ax, int bx, int cx, int dx)
 {
 	if(ax == 0){
@@ -146,8 +152,10 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		readSector(bx);
 	}else if(ax == 3){
 		readFile(cx,bx);
+	}else if(ax == 4){
+		executeProgram(bx,cx);
 	}else{
-		printString("Error AX value should be < 3\0");
+		printString("Error AX value should be < 5\0");
 	}
 }
 
