@@ -6,6 +6,7 @@ config.bxrc
 # Compiled 
 
 bochsout.txt
+floppya.img
 kernel.o
 kernel_asm.o
 kernel
