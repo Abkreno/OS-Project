@@ -12,3 +12,4 @@ kernel
 loadFile
 lib.o
 shell.o
+shell
