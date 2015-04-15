@@ -139,15 +139,15 @@ void readFile(char* buffer, char* fileName)
 
 void executeProgram(char* name,int segment) {
 
-	int base = 0x0000;
+	int offset = 0x0000;
+	int base = segment*10;
 	int i = 0;
 
 	readFile(buffer,name);
 
 	while(buffer[i] != "\0") {
-		putInMemory(segment,base,buffer[i]);
-		i = i + 1 ;
-		base = base + 1 ;
+		putInMemory(segment,base+offset,buffer[i++]);
+		offset++;
 	}
 	launchProgram(segment);
 
