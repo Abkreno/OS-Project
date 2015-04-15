@@ -2,7 +2,9 @@ int equals(char*,char*);
 
 main( void ) {
   char* command;
-  char** splitted;
+  char* argPtr;
+  int i ;
+
   while(1) {
 
     //prompt
@@ -10,11 +12,24 @@ main( void ) {
 
     //reading a command
     interrupt(0x21,1,command,0,0);
-    
-    if(equals(splitted[0],"view\0")) {
-      interrupt(0x21,3,splitted[1],0,0); // readFile
-    }else if(equals(splitted[0],"execute\0")){
-      interrupt(0x21,4,splitted[1],0x2000,0); // executeProgram
+
+    //pointing to the arg beginning
+    argPtr = &command;
+    i = 0 ;
+
+    while(command[i] != '\0' && command[i] != ' ') {
+      i++;
+      argPtr++;
+    }
+
+    interrupt(0x21,0,argPtr,0,0);
+
+    if(equals(command,"view\0")) {
+      char* file;
+      interrupt(0x21,3,file,argPtr,0); // readFile
+      interrupt(0x21,0,file,0,0); // print File
+    }else if(equals(command,"execute\0")){
+      interrupt(0x21,4,argPtr,0x2000,0); // executeProgram
     }else{
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
