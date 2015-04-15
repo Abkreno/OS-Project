@@ -3,7 +3,7 @@ char* command;
 char* argPtr;
 
 main( void ) { 
-  int i;
+  int i,j;
   while(1) {
 
     //prompt
@@ -13,17 +13,17 @@ main( void ) {
     interrupt(0x21,1,command,0,0);
    
     //pointing to the arg beginning
-    argPtr = command;
     i = 0;
-
+    j = 0;
     while(command[i] != '\0' && command[i] != ' ') {
       i++;
-      argPtr++;
     }
-    if(command[i]==' ')
-      argPtr++;
+    if(command[i]==' '){
+  		command[i] = '\0';
+    	i++;
+    	while((argPtr[j++]=command[i++]) != '\0');
+    }
 
-  	command[i] = '\0';
 
     interrupt(0x21,0,argPtr,0,0);
     interrupt(0x21,10,0,0,0);
