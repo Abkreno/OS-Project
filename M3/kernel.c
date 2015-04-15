@@ -71,7 +71,6 @@ void readString(char* chars)
 		if(x == enter){
 			interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
 			interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
-			chars[index++] = 0xa;                    //line feed
 			chars[index] = 0x0;                    //end of string
 			break;
 

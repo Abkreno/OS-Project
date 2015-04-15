@@ -7,13 +7,6 @@ main( void ) {
   while(1) {
     char* command;
     char** splitted;
-    
-    splitted = str_split("hello man\0", ' ');
-    
-    interrupt(0x21,0,splitted[0],0,0);
-    interrupt(0x21,10,0,0,0);
-    interrupt(0x21,0,splitted[1],0,0);		
-    interrupt(0x21,10,0,0,0);
 
     //prompt
     interrupt(0x21,0,"shell$\0",0,0);
@@ -21,7 +14,7 @@ main( void ) {
     //reading a command
     interrupt(0x21,1,command,0,0);
     splitted = str_split(command , ' ');
-    
+
     if(equals(splitted[0],"view")) {
       interrupt(0x21,3,splitted[1],0,0); // readFile
     }else if(equals(splitted[0],"execute")){
@@ -55,7 +48,7 @@ char** str_split(char* a_str, char a_delim)
   int idx2 = 0;
   char* tmp = a_str;
   char* last_comma = 0;
-  
+
   /* Count how many elements will be extracted. */
   while (*tmp)
   {
@@ -67,10 +60,10 @@ char** str_split(char* a_str, char a_delim)
   }
   if(count==2){
   }
-  /* Add 2 to the count 1 for the last token 
+  /* Add 2 to the count 1 for the last token
   and 1 for the end of the array */
   count+=2;
-  
+
   result[count] = '\0';
 
   while (idx < count)
