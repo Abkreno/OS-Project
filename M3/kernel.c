@@ -14,24 +14,24 @@ char sector[512]; // temp array to read sectors on
 
 main( void )
 {
-	/*	
+	/*
 	readString(line);
 	printString(line);
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 	*/
-	
+
 	makeInterrupt21();
 	interrupt(0x21, 3, "messag\0", buffer, 0); /*read the file into buffer*/
 	interrupt(0x21, 0, buffer, 0, 0); /*print out the file*/
-	
+
 	/*printString("Enter a line:\n\0");
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
-	
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
+
 	makeInterrupt21();
-	
+
 	interrupt(0x21,1,line,0,0);
 	interrupt(0x21,0,line,0,0);
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 	*/
 	while(1);
 }
@@ -42,13 +42,13 @@ void printString(char* chars)
 	for (i = 0; chars[i] != '\0'; i++){
 		int currChar = chars[i];
 		interrupt(0x10, 0xE*256+currChar, 0, 0, 0);
-	};	
+	};
 }
 
 void println()
 {
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
 
 void readString(char* chars)
@@ -60,20 +60,20 @@ void readString(char* chars)
 	index = 0;
    	while(1){
 		x = interrupt(0x16, 0, 0, 0, 0);
-		if(x == enter){		
+		if(x == enter){
 			interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-			interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return 
+			interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 			chars[index++] = 0xa;                    //line feed
 			chars[index] = 0x0;                    //end of string
 			break;
-		
+
 		}else if(x == backspace){
-			interrupt(0x10, 0xE*256+x, 0, 0, 0);     // print backspace  
-			interrupt(0x10, 0xE*256+0x20, 0, 0, 0);  // print space 
+			interrupt(0x10, 0xE*256+x, 0, 0, 0);     // print backspace
+			interrupt(0x10, 0xE*256+0x20, 0, 0, 0);  // print space
 			interrupt(0x10, 0xE*256+x, 0, 0, 0);     // print backspace again
 			index--;
 		}else if (index < 80) {
-			interrupt(0x10, 0xE*256+x, 0, 0, 0);  
+			interrupt(0x10, 0xE*256+x, 0, 0, 0);
 			chars[index++] = x;
 		}
 	}
@@ -94,7 +94,7 @@ void readSector(char* buffer, int sector)
 	head = ( sector / 18 ) MOD 2
 	track = ( sector / 36 )
 	*/
-	
+
 	int CX,DX,CH,CL,DH,DL;
 	CH = div(sector , 36);
     CL = mod(sector , 18) + 1;
@@ -111,11 +111,11 @@ void readFile(char* buffer, char* fileName)
 	int i,j,entry,sectorNum,count;
 	int flag = 0;
 	readSector(sector,2);
-			
+
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
 			if(sector[i*32 + j]!=fileName[j]){
-				break;	
+				break;
 			}
 		};
 		if(j == 6){
@@ -124,7 +124,7 @@ void readFile(char* buffer, char* fileName)
 			break;
 		}
 	};
-	
+
 	if(flag==0){
 		return;
 	}
@@ -132,14 +132,25 @@ void readFile(char* buffer, char* fileName)
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = sector[entry*32+j];
-		readSector(buffer+count,sectorNum);	
+		readSector(buffer+count,sectorNum);
 		count = count + 512;
 	}
 }
 
-void executeProgram(char* name, int segment)
-{
+void executeProgram(char* name,int segment) {
+
+	int base = 0x0000;
+	int i = 0;
+
 	readFile(buffer,name);
+
+	while(buffer[i] != "\0") {
+		putInMemory(segment,base,buffer[i]);
+		i = i + 1 ;
+		base = bsae + 1 ;
+	}
+	launchProgram(segment);
+
 }
 
 void handleInterrupt21(int ax, int bx, int cx, int dx)
