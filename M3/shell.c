@@ -2,7 +2,7 @@ int equals(char*,char*);
 char* command;
 char* argPtr;
 
-main( void ) { 
+main( void ) {
   int i,j;
   while(1) {
 
@@ -11,7 +11,7 @@ main( void ) {
 
     //reading a command
     interrupt(0x21,1,command,0,0);
-   
+
     //pointing to the arg beginning
     i = 0;
     j = 0;
@@ -27,10 +27,10 @@ main( void ) {
 
     interrupt(0x21,0,argPtr,0,0);
     interrupt(0x21,10,0,0,0);
-    
+
     if(equals(command,"view\0")) {
       char* file;
-      interrupt(0x21,3,file,argPtr,0); // readFile
+      interrupt(0x21,3,argPtr,file,0); // readFile
       interrupt(0x21,0,file,0,0); // print File
     }else if(equals(command,"execute\0")){
       interrupt(0x21,4,argPtr,0x2000,0); // executeProgram
