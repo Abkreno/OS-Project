@@ -151,7 +151,7 @@ void executeProgram(char* name,int segment) {
 
 	readFile(buffer,name);
 
-	while(buffer[i] != "\0"&& i<512) {
+	while(i < 13312) {
 		putInMemory(segment,offset,buffer[i++]);
 		offset++;
 	}
