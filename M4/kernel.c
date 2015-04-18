@@ -1,6 +1,7 @@
 void printString(char*);
 void readString(char*);
 void readSector(char*, int);
+void writeSector(char*, int);
 void readFile(char* , char*);
 void executeProgram(char*, int);
 void handleInterrupt21(int, int, int, int);
