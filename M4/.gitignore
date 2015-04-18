@@ -1,0 +1,16 @@
+# Beacuse we have different display libraries
+
+config.bxrc
+
+
+# Compiled 
+
+bochsout.txt
+floppya.img
+kernel.o
+kernel_asm.o
+kernel
+loadFile
+lib.o
+shell.o
+shell
