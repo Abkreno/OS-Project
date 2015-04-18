@@ -164,7 +164,9 @@ void readFile(char* buffer, char* fileName)
 
 void deleteFile(char* name)
 {
-
+	readSector(map,1);
+	readSector(directory,2);
+	
 }
 
 void executeProgram(char* name,int segment) {
