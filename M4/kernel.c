@@ -14,7 +14,8 @@ int mod(int, int);
 char line[82];
 char buffer[13312]; /*this is the maximum size of a file*/
 char sector[512]; // temp array to read sectors on
-
+char directory[512];
+char map[512];
 main( void )
 {
 	/*
@@ -162,7 +163,7 @@ void readFile(char* buffer, char* fileName)
 
 void deleteFile(char* name)
 {
-	
+
 }
 
 void executeProgram(char* name,int segment) {
