@@ -244,6 +244,8 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		terminateProgram();
 	}else if(ax == 6){
 		writeSector(bx,cx);
+	}else if(ax == 7){
+		deleteFile(bx);
 	}else if (ax == 10) {
 		println();
 	}else{
