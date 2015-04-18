@@ -50,8 +50,8 @@ main( void )
 
 	makeInterrupt21();
 	interrupt(0x21, 7, "messag\0", 0, 0); //delete messag
-	interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
-	interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
+	//interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
+	//interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
 }
 
 void printString(char* chars)
@@ -172,9 +172,7 @@ void deleteFile(char* name)
 {
 	int i,j,entry,sectorNum;
 	int flag = 0;
-	//readSector(map,1);
-	//readSector(directory,2);
-	printString("hello\0");
+	readSector(directory,2);
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
 			if(directory[i*32 + j]!=name[j]){
@@ -187,15 +185,15 @@ void deleteFile(char* name)
 			break;
 		}
 	};
-
 	if(flag==0){
 		return;
 	}
-
+	printString("here\0");
 	//the file is found , set the first byte to 0x00
 	directory[0] = 0x00;
 
 	//set the correspoding sectors to 0x00 in the map
+	readSector(map,1);
 	for (j = 6; j < 32; j++){
 		sectorNum = directory[entry*32+j];
 		if(sectorNum == 0)
