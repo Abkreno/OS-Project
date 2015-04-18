@@ -164,7 +164,7 @@ void readFile(char* buffer, char* fileName)
 
 void deleteFile(char* name)
 {
-	int i,j,entry,sectorNum,count;
+	int i,j,entry,sectorNum;
 	int flag = 0;
 	readSector(map,1);
 	readSector(directory,2);
@@ -184,6 +184,15 @@ void deleteFile(char* name)
 
 	if(flag==0){
 		return;
+	}
+	//the file is found , set the first byte to 0x00
+	directory[0] = 0x00;
+
+	for (j = 6; j < 32; j++){
+		sectorNum = directory[entry*32+j];
+		if(sectorNum == 0)
+			break;
+		map[sectorNum+1] = 0x00;
 	}
 
 }
