@@ -43,9 +43,15 @@ main( void )
 	// interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
 	// while(1);
 
+	/*
 	makeInterrupt21();
 	interrupt(0x21,4,"shell\0",0x2000,0);
+	*/
 
+	makeInterrupt21();
+	interrupt(0x21, 7, "messag\0", 0, 0); //delete messag
+	interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
+	interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
 }
 
 void printString(char* chars)
@@ -171,7 +177,7 @@ void deleteFile(char* name)
 
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
-			if(directory[i*32 + j]!=fileName[j]){
+			if(directory[i*32 + j]!=name[j]){
 				break;
 			}
 		};
