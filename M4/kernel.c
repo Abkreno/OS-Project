@@ -172,9 +172,9 @@ void deleteFile(char* name)
 {
 	int i,j,entry,sectorNum;
 	int flag = 0;
-	readSector(map,1);
-	readSector(directory,2);
-
+	//readSector(map,1);
+	//readSector(directory,2);
+	printString("hello\0");
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
 			if(directory[i*32 + j]!=name[j]){
@@ -202,8 +202,8 @@ void deleteFile(char* name)
 			break;
 		map[sectorNum+1] = 0x00;
 	}
-	writeSector(map,1);
-	writeSector(directory,2);
+	//writeSector(map,1);
+	//writeSector(directory,2);
 }
 
 void executeProgram(char* name,int segment) {
