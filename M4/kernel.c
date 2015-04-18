@@ -113,6 +113,19 @@ void readSector(char* buffer, int sector)
 	interrupt(0x13, 0x201, buffer, CX, DX);
 }
 
+void writeSector(char* buffer, int sector)
+{
+	int CX,DX,CH,CL,DH,DL;
+	CH = div(sector , 36);
+    CL = mod(sector , 18) + 1;
+    DH = div(sector , 18);
+    DH = mod(DH ,2);
+    DL = 0;
+    CX = CH*256 + CL;
+    DX = DH*256 + DL;
+	interrupt(0x13, 0x301, buffer, CX, DX);
+}
+
 void readFile(char* buffer, char* fileName)
 {
 	int i,j,entry,sectorNum,count;
@@ -181,18 +194,19 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 	}else if(ax == 1){
 		readString(bx);
 	}else if(ax == 2){
-		readSector(bx);
+		readSector(bx,cx);
 	}else if(ax == 3){
 		readFile(cx,bx);
 	}else if(ax == 4){
 		executeProgram(bx,cx);
 	}else if(ax == 5){
 		terminateProgram();
-	}
-	else if (ax == 10) {
+	}else if(ax == 6){
+		writeSector(bx,cx);
+	}else if (ax == 10) {
 		println();
 	}else{
-		printString("Error AX value should be < 6\0");
+		printString("Error AX value should be < 11\0");
 	}
 }
 
