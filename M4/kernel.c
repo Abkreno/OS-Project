@@ -16,6 +16,7 @@ char buffer[13312]; /*this is the maximum size of a file*/
 char sector[512]; // temp array to read sectors on
 char directory[512];
 char map[512];
+
 main( void )
 {
 	/*
@@ -132,11 +133,11 @@ void readFile(char* buffer, char* fileName)
 {
 	int i,j,entry,sectorNum,count;
 	int flag = 0;
-	readSector(sector,2);
+	readSector(directory,2);
 
 	for (i = 0; i < 16; i++){
 		for (j = 0; j < 6; j++){
-			if(sector[i*32 + j]!=fileName[j]){
+			if(directory[i*32 + j]!=fileName[j]){
 				break;
 			}
 		};
@@ -153,7 +154,7 @@ void readFile(char* buffer, char* fileName)
 
 	count = 0;
 	for (j = 6; j < 32; j++){
-		sectorNum = sector[entry*32+j];
+		sectorNum = directory[entry*32+j];
 		if(sectorNum == 0)
 			break;
 		readSector(buffer+count,sectorNum);
