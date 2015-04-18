@@ -3,6 +3,7 @@ void readString(char*);
 void readSector(char*, int);
 void writeSector(char*, int);
 void readFile(char* , char*);
+void deleteFile(char*);
 void executeProgram(char*, int);
 void handleInterrupt21(int, int, int, int);
 void terminateProgram();
@@ -157,6 +158,11 @@ void readFile(char* buffer, char* fileName)
 		readSector(buffer+count,sectorNum);
 		count = count + 512;
 	}
+}
+
+void deleteFile(char* name)
+{
+	
 }
 
 void executeProgram(char* name,int segment) {
