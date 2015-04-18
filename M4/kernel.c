@@ -164,9 +164,28 @@ void readFile(char* buffer, char* fileName)
 
 void deleteFile(char* name)
 {
+	int i,j,entry,sectorNum,count;
+	int flag = 0;
 	readSector(map,1);
 	readSector(directory,2);
-	
+
+	for (i = 0; i < 16; i++){
+		for (j = 0; j < 6; j++){
+			if(directory[i*32 + j]!=fileName[j]){
+				break;
+			}
+		};
+		if(j == 6){
+			flag = 1;
+			entry = i;
+			break;
+		}
+	};
+
+	if(flag==0){
+		return;
+	}
+
 }
 
 void executeProgram(char* name,int segment) {
