@@ -190,8 +190,8 @@ void deleteFile(char* name)
 		return;
 	}
 	//the file is found , set the first byte to 0x00
-	directory[entry] = 0x00;
-
+	directory[32*entry] = 0x00;
+	
 	//set the correspoding sectors to 0x00 in the map
 	readSector(map,1);
 	for (j = 6; j < 32; j++){
