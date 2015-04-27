@@ -3,6 +3,7 @@ void readString(char*);
 void readSector(char*, int);
 void writeSector(char*, int);
 void readFile(char* , char*);
+void writeFile(char*, char*, int);
 void deleteFile(char*);
 void executeProgram(char*, int);
 void handleInterrupt21(int, int, int, int);
@@ -169,6 +170,11 @@ void readFile(char* buffer, char* fileName)
 	}
 }
 
+void writeFile(char* name, char* buffer, int secNum)
+{
+
+}
+
 void deleteFile(char* name)
 {
 	int i,j,entry,sectorNum;
@@ -250,6 +256,8 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		writeSector(bx,cx);
 	}else if(ax == 7){
 		deleteFile(bx);
+	}else if(ax == 8){
+		writeFile(bx,cx,dx);
 	}else if (ax == 10) {
 		println();
 	}else{
