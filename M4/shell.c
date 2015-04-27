@@ -31,7 +31,11 @@ main( void ) {
       interrupt(0x21,0,file,0,0); // print File
     }else if(equals(command,"execute\0")){
       interrupt(0x21,4,argPtr,0x2000,0); // executeProgram
-    }else{
+    }
+    else if(equals(command,"delete\0")){
+      interrupt(0x21,7,argPtr,0,0); // deleteFile
+    }
+    else{
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
     }

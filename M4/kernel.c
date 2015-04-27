@@ -18,7 +18,7 @@ char buffer[13312]; /*this is the maximum size of a file*/
 char sector[512]; // temp array to read sectors on
 char directory[512];
 char map[512];
-char detectedFreeSectors[512];	
+char detectedFreeSectors[512];
 
 main( void )
 {
@@ -46,30 +46,28 @@ main( void )
 	// interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
 	// while(1);
 
-	/*
 	makeInterrupt21();
 	interrupt(0x21,4,"shell\0",0x2000,0);
-	*/
 
 	// makeInterrupt21();
 	// interrupt(0x21, 7, "messag\0", 0, 0); //delete messag
 	// interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
 	// interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
 	// while(1);
-
-	int i=0;
-	//FIXME hey local
-	char buffer1[13312];
-	char buffer2[13312];
-	buffer2[0]='h'; buffer2[1]='e'; buffer2[2]='l'; buffer2[3]='l';
-	buffer2[4]='o';
-	for(i=5; i<13312; i++) buffer2[i]=0x0;
-	
-	makeInterrupt21();
-	interrupt(0x21,8, "testW\0", buffer2, 1); //write file testW
-	interrupt(0x21,3, "testW\0", buffer1, 0); //read file testW
-	interrupt(0x21,0, buffer1, 0, 0); // print out contents of testW
-	while(1);
+	//
+	// int i=0;
+	// //FIXME hey local
+	// char buffer1[13312];
+	// char buffer2[13312];
+	// buffer2[0]='h'; buffer2[1]='e'; buffer2[2]='l'; buffer2[3]='l';
+	// buffer2[4]='o';
+	// for(i=5; i<13312; i++) buffer2[i]=0x0;
+	//
+	// makeInterrupt21();
+	// interrupt(0x21,8, "testW\0", buffer2, 1); //write file testW
+	// interrupt(0x21,3, "testW\0", buffer1, 0); //read file testW
+	// interrupt(0x21,0, buffer1, 0, 0); // print out contents of testW
+	// while(1);
 }
 
 void printString(char* chars)
@@ -92,7 +90,7 @@ void printChar(int c)
 	int i;
 	interrupt(0x10, 0xE*256+c+48, 0, 0, 0);
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return	
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
 
 
@@ -226,7 +224,7 @@ void writeFile(char* name, char* buffer, int secNum)
 		println();
 		return;
 	}
-	
+
 	j = 0 ;
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
@@ -260,6 +258,8 @@ void deleteFile(char* name)
 		}
 	};
 	if(flag==0){
+		//TODO set an error message here or there !
+		printString("Hello\0");
 		return;
 	}
 	//the file is found , set the first byte to 0x00
