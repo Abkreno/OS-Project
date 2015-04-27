@@ -178,8 +178,12 @@ void readFile(char* buffer, char* fileName)
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = directory[entry*32+j];
+		printString("here1");
+		println();
 		if(sectorNum == 0)
 			break;
+		printString("here2");
+		println();
 		readSector(buffer+count,sectorNum);
 		count = count + 512;
 	}
@@ -222,7 +226,7 @@ void writeFile(char* name, char* buffer, int secNum)
 	j = 0 ;
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
-		directory[entry*32 + i] = detectedFreeSectors[i]+1;
+		directory[entry*32 + i + 6] = detectedFreeSectors[i]+1;
 		writeSector(buffer + j,detectedFreeSectors[i]+1);
 		j+=512;
 	}
