@@ -49,10 +49,23 @@ main( void )
 	interrupt(0x21,4,"shell\0",0x2000,0);
 	*/
 
+	// makeInterrupt21();
+	// interrupt(0x21, 7, "messag\0", 0, 0); //delete messag
+	// interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
+	// interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
+	// while(1);
+
+	int i=0;
+	//FIXME hey local
+	char buffer1[13312];
+	char buffer2[13312];
+	buffer2[0]=’h’; buffer2[1]=’e’; buffer2[2]=’l’; buffer2[3]=’l’;
+	buffer2[4]=’o’;
+	for(i=5; i<13312; i++) buffer2[i]=0x0;
 	makeInterrupt21();
-	interrupt(0x21, 7, "messag\0", 0, 0); //delete messag
-	interrupt(0x21, 3, "messag\0", buffer, 0); // try to read messag
-	interrupt(0x21, 0, buffer, 0, 0); //print out the contents of buffer
+	interrupt(0x21,8, "testW\0", buffer2, 1); //write file testW
+	interrupt(0x21,3, "testW\0", buffer1, 0); //read file testW
+	interrupt(0x21,0, buffer1, 0, 0); // print out contents of testW
 	while(1);
 }
 
