@@ -191,7 +191,6 @@ void writeFile(char* name, char* buffer, int secNum)
 	int i , j , entry ;
 	readSector(map,1);
 	readSector(directory,2);
-
 	for (i = 0; i < 16; i++){
 		if(directory[i*32] == 0x00)
 			{
@@ -208,7 +207,7 @@ void writeFile(char* name, char* buffer, int secNum)
 	j = 0;
 
 	//Looping through map
-	for(i = 0;i<512 && j < secNum;i++ ,j++){
+	for(i = 1;i<512 && j < secNum;i++ ,j++){
 		if(map[i] == 0x00) {
 			detectedFreeSectors[j] = i ;
 		}
@@ -219,13 +218,12 @@ void writeFile(char* name, char* buffer, int secNum)
 		println();
 		return;
 	}
-
-
+	
 	j = 0 ;
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
-		directory[entry*32 + i] = detectedFreeSectors[i];
-		writeSector(buffer[j],detectedFreeSectors[i]);
+		directory[entry*32 + i] = detectedFreeSectors[i]-1;
+		writeSector(buffer + j,detectedFreeSectors[i]-1);
 		j+=512;
 	}
 
