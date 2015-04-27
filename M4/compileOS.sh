@@ -18,4 +18,3 @@ ld86 -o shell -d shell.o lib.o
 ./loadFile tstprg
 ./loadFile tstpr2
 ./loadFile shell
-bochs -f config.bxrc
