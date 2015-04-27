@@ -184,16 +184,11 @@ void readFile(char* buffer, char* fileName)
 	if(flag==0){
 		return;
 	}
-	
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = directory[entry*32+j];
-		printString("here1");
-		println();
 		if(sectorNum == 0)
 			break;
-		printString("here2");
-		println();
 		readSector(buffer+count,sectorNum);
 		count = count + 512;
 	}
@@ -201,7 +196,6 @@ void readFile(char* buffer, char* fileName)
 
 void writeFile(char* name, char* buffer, int secNum)
 {
-	//FIXME hey local thing
 	int i , j , entry ;
 	readSector(map,1);
 	readSector(directory,2);
@@ -218,7 +212,6 @@ void writeFile(char* name, char* buffer, int secNum)
 				break;
 			}
 	};
-
 	j = 0;
 
 	//Looping through map
@@ -243,12 +236,10 @@ void writeFile(char* name, char* buffer, int secNum)
 	}
 
 	for(;i<512;i++){
-		directory[entry*32 + i] = 0x00 ;
+		directory[entry*32 + i + 6] = 0x00 ;
 	}
-
 	writeSector(map,1);
 	writeSector(directory,2);
-
 }
 
 void deleteFile(char* name)
