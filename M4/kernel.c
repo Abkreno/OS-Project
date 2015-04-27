@@ -87,7 +87,7 @@ void println()
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
 
-void println(char c)
+void printChar(char c)
 {
 	interrupt(0x10, 0xE*256+c, 0, 0, 0);
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
@@ -236,6 +236,7 @@ void writeFile(char* name, char* buffer, int secNum)
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
 		directory[entry*32 + i + 6] = detectedFreeSectors[i]+1;
+		printChar(directory[entry*32 + i + 6]);
 		writeSector(buffer + j,detectedFreeSectors[i]+1);
 		j+=512;
 	}
