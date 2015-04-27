@@ -1,5 +1,5 @@
 void printString(char*);
-void printChar(char);
+void printChar(int);
 void readString(char*);
 void readSector(char*, int);
 void writeSector(char*, int);
@@ -87,11 +87,12 @@ void println()
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
 
-void printChar(char c)
+void printChar(int c)
 {
-	interrupt(0x10, 0xE*256+c, 0, 0, 0);
+	int i;
+	interrupt(0x10, 0xE*256+c+48, 0, 0, 0);
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return	
 }
 
 
@@ -183,7 +184,7 @@ void readFile(char* buffer, char* fileName)
 	if(flag==0){
 		return;
 	}
-
+	
 	count = 0;
 	for (j = 6; j < 32; j++){
 		sectorNum = directory[entry*32+j];
@@ -214,15 +215,16 @@ void writeFile(char* name, char* buffer, int secNum)
 				for(;j<6;j++){
 					directory[(entry * 32 )+j] = 0x00;
 				}
+				break;
 			}
 	};
 
 	j = 0;
 
 	//Looping through map
-	for(i = 0;i<512 && j < secNum;i++ ,j++){
+	for(i = 0;i<512 && j < secNum;i++){
 		if(map[i] == 0x00) {
-			detectedFreeSectors[j] = i ;
+			detectedFreeSectors[j++] = i;
 		}
 	}
 	// If there is no sectors free for our file
@@ -235,9 +237,8 @@ void writeFile(char* name, char* buffer, int secNum)
 	j = 0 ;
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
-		directory[entry*32 + i + 6] = detectedFreeSectors[i]+1;
-		printChar(directory[entry*32 + i + 6]);
-		writeSector(buffer + j,detectedFreeSectors[i]+1);
+		directory[entry*32 + i + 6] = detectedFreeSectors[i]-1;
+		writeSector(buffer + j,detectedFreeSectors[i]-1);
 		j+=512;
 	}
 
