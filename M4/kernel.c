@@ -17,6 +17,7 @@ char buffer[13312]; /*this is the maximum size of a file*/
 char sector[512]; // temp array to read sectors on
 char directory[512];
 char map[512];
+char detectedFreeSectors[512];	
 
 main( void )
 {
@@ -187,7 +188,6 @@ void readFile(char* buffer, char* fileName)
 void writeFile(char* name, char* buffer, int secNum)
 {
 	//FIXME hey local thing
-	char detectedFreeSectors[secNum];	
 	int i , j , entry ;
 	readSector(map,1);
 	readSector(directory,2);
