@@ -59,9 +59,10 @@ main( void )
 	//FIXME hey local
 	char buffer1[13312];
 	char buffer2[13312];
-	buffer2[0]=’h’; buffer2[1]=’e’; buffer2[2]=’l’; buffer2[3]=’l’;
-	buffer2[4]=’o’;
+	buffer2[0]='h'; buffer2[1]='e'; buffer2[2]='l'; buffer2[3]='l';
+	buffer2[4]='o';
 	for(i=5; i<13312; i++) buffer2[i]=0x0;
+	
 	makeInterrupt21();
 	interrupt(0x21,8, "testW\0", buffer2, 1); //write file testW
 	interrupt(0x21,3, "testW\0", buffer1, 0); //read file testW
@@ -186,8 +187,7 @@ void readFile(char* buffer, char* fileName)
 void writeFile(char* name, char* buffer, int secNum)
 {
 	//FIXME hey local thing
-	char detectedFreeSectors[secNum];
-
+	char detectedFreeSectors[secNum];	
 	int i , j , entry ;
 	readSector(map,1);
 	readSector(directory,2);
@@ -213,13 +213,13 @@ void writeFile(char* name, char* buffer, int secNum)
 			detectedFreeSectors[j] = i ;
 		}
 	}
-
 	// If there is no sectors free for our file
 	if(j < secNum){
 		printString("Error , you don't have any free space\0");
 		println();
 		return;
 	}
+
 
 	j = 0 ;
 	for(i=0;i<secNum;i++){
