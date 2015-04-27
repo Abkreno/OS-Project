@@ -1,4 +1,5 @@
 void printString(char*);
+void printChar(char);
 void readString(char*);
 void readSector(char*, int);
 void writeSector(char*, int);
@@ -85,6 +86,14 @@ void println()
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
+
+void println(char c)
+{
+	interrupt(0x10, 0xE*256+c, 0, 0, 0);
+	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
+}
+
 
 void readString(char* chars)
 {
