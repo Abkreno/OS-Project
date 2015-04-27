@@ -207,7 +207,7 @@ void writeFile(char* name, char* buffer, int secNum)
 	j = 0;
 
 	//Looping through map
-	for(i = 1;i<512 && j < secNum;i++ ,j++){
+	for(i = 0;i<512 && j < secNum;i++ ,j++){
 		if(map[i] == 0x00) {
 			detectedFreeSectors[j] = i ;
 		}
@@ -222,8 +222,8 @@ void writeFile(char* name, char* buffer, int secNum)
 	j = 0 ;
 	for(i=0;i<secNum;i++){
 		map[detectedFreeSectors[i]] = 0xFF;
-		directory[entry*32 + i] = detectedFreeSectors[i]-1;
-		writeSector(buffer + j,detectedFreeSectors[i]-1);
+		directory[entry*32 + i] = detectedFreeSectors[i]+1;
+		writeSector(buffer + j,detectedFreeSectors[i]+1);
 		j+=512;
 	}
 
