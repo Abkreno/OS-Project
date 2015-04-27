@@ -172,6 +172,56 @@ void readFile(char* buffer, char* fileName)
 
 void writeFile(char* name, char* buffer, int secNum)
 {
+	//FIXME hey local thing
+	char detectedFreeSectors[secNum];
+
+	int i , j , entry ;
+	readSector(map,1);
+	readSector(directory,2);
+
+	for (i = 0; i < 16; i++){
+		if(directory[i*32] == 0x00)
+			{
+				entry = i ;
+				for(j = 0 ; name[j] != 0x00 ; j++){
+					directory[(entry * 32 )+j] = name[j];
+				}
+				for(;j<6;j++){
+					directory[(entry * 32 )+j] = 0x00;
+				}
+			}
+	};
+
+	j = 0;
+
+	//Looping through map
+	for(i = 0;i<512 && j < secNum;i++ ,j++){
+		if(map[i] == 0x00) {
+			detectedFreeSectors[j] = i ;
+		}
+	}
+
+	// If there is no sectors free for our file
+	if(j < secNum){
+		printString("Error , you don't have any free space\0");
+		println();
+		return;
+	}
+
+	j = 0 ;
+	for(i=0;i<secNum;i++){
+		map[detectedFreeSectors[i]] = 0xFF;
+		directory[entry*32 + i] = detectedFreeSectors[i];
+		writeSector(buffer[j],detectedFreeSectors[i]);
+		j+=512;
+	}
+
+	for(;i<512;i++){
+		directory[entry*32 + i] = 0x00 ;
+	}
+
+	writeSector(map,1);
+	writeSector(directory,2);
 
 }
 
@@ -197,7 +247,7 @@ void deleteFile(char* name)
 	}
 	//the file is found , set the first byte to 0x00
 	directory[32*entry] = 0x00;
-	
+
 	//set the correspoding sectors to 0x00 in the map
 	readSector(map,1);
 	for (j = 6; j < 32; j++){
