@@ -1,4 +1,5 @@
 int equals(char*,char*);
+void clearBuffer(char* buffer, int length);
 char command[81];
 char argPtr[81];
 char file[13312];
@@ -29,6 +30,7 @@ main( void ) {
       interrupt(0x21,3,argPtr,file,0); // readFile
       file[13312] = '\0';
       interrupt(0x21,0,file,0,0); // print File
+      clearBuffer(file,13312);
     }else if(equals(command,"execute\0")){
       interrupt(0x21,4,argPtr,0x2000,0); // executeProgram
     }
@@ -42,6 +44,13 @@ main( void ) {
 
   }
 
+}
+
+void clearBuffer(char* buffer, int length){
+  int i;
+  for(i=0;i<length;i++){
+    buffer[i] = 0x00;
+  }
 }
 
 int equals(char* str1 , char* str2)
