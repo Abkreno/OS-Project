@@ -43,6 +43,10 @@ main( void ) {
     } else if(equals(command,"delete\0")) {
       //TODO Print a message if not file found
       interrupt(0x21,7,argPtr1,0,0); // deleteFile
+    } else if(equals(command,"copy\0")){ //copy File
+      //TODO Print a message if file not found
+      interrupt(0x21,3,argPtr1,file,0); //reading the file in buffer
+      interrupt(0x21,8,argPtr2,file,1); //FIXME the third parameter should be # of sectors ??
     } else{
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
