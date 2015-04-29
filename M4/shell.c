@@ -74,8 +74,11 @@ main( void ) {
       		};
 
           dirFileName[j++] = '\0';
+          for (j = 6; directory[(i*32)+j]!='\0' ; j++);
 
           interrupt(0x21,0,dirFileName,0,0);
+          interrupt(0x21,10,0,0,0);
+          interrupt(0x21,11,(j-6)*512,0,0);
           interrupt(0x21,10,0,0,0);
           
           clearBuffer(dirFileName,6);
