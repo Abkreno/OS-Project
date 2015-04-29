@@ -182,6 +182,8 @@ void readFile(char* buffer, char* fileName)
 	};
 
 	if(flag==0){
+		printString(stdout);
+		println();
 		return;
 	}
 	count = 0;
@@ -316,6 +318,7 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 	}else if(ax == 2){
 		readSector(bx,cx);
 	}else if(ax == 3){
+		copyMessageToStdout(dx);
 		readFile(cx,bx);
 	}else if(ax == 4){
 		executeProgram(bx,cx);

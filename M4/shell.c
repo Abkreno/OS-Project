@@ -39,7 +39,8 @@ main( void ) {
 
     if(equals(command,"view\0")) {
       //TODO Print a message if not file found
-      interrupt(0x21,3,argPtr1,file,0); // readFile
+      copyMessageToStdout("file not found");
+      interrupt(0x21,3,argPtr1,file,stdout); // readFile
       file[13312] = '\0';
       interrupt(0x21,0,file,0,0); // print File
     } else if(equals(command,"execute\0")) {
