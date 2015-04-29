@@ -38,7 +38,6 @@ main( void ) {
       interrupt(0x21,3,argPtr1,file,0); // readFile
       file[13312] = '\0';
       interrupt(0x21,0,file,0,0); // print File
-      clearBuffer(file,13312);
     } else if(equals(command,"execute\0")) {
       interrupt(0x21,4,argPtr1,0x2000,0); // executeProgram
     } else if(equals(command,"delete\0")) {
@@ -48,6 +47,10 @@ main( void ) {
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
     }
+    clearBuffer(file,13312);
+    clearBuffer(argPtr1,81);
+    clearBuffer(argPtr2,81);
+
 
   }
 
