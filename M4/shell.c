@@ -44,7 +44,7 @@ main( void ) {
       interrupt(0x21,4,argPtr1,0x2000,0); // executeProgram
     } else if(equals(command,"delete\0")) {
       //TODO Print a message if not file found
-      copyMessageToStdout("Hellloooo");
+      copyMessageToStdout("file not found");
       interrupt(0x21,7,argPtr1,0,stdout); // deleteFile
     } else if(equals(command,"copy\0")){ //copy File
       //TODO Print a message if file not found
