@@ -7,6 +7,8 @@ char argPtr1[81];
 char argPtr2[81];
 char stdout[81];
 char file[13312];
+char directory[512];
+char dirFileName[6];
 int sectors ;
 
 main( void ) {
@@ -58,6 +60,29 @@ main( void ) {
       interrupt(0x21,3,argPtr1,file,0); //reading the file in buffer
       sectors = calculateSectors(file);
       interrupt(0x21,8,argPtr2,file,sectors); //copy File
+
+    } else if(equals(command,"dir\0")){
+
+      interrupt(0x21,2,directory,2,0);
+      i = 0 ;
+      j = 0 ;
+
+      for (i = 0; i < 16; i++){
+        if(directory[i*32] != 0x00) {
+      		for (j = 0; directory[(i*32)+j]!='\0'; j++){
+            dirFileName[j] = directory[(i*32)+j];
+      		};
+
+          dirFileName[j] = '\0';
+
+          interrupt(0x21,0,dirFileName,0,0);
+          interrupt(0x21,10,0,0,0);
+          clearBuffer(dirFileName,6);
+
+        }
+    	};
+
+
 
     } else{
 
