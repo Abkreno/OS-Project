@@ -47,7 +47,7 @@ main( void )
 	// makeInterrupt21();
 	// interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
 	// while(1);
-	
+
 	makeInterrupt21();
 	interrupt(0x21,4,"shell\0",0x2000,0);
 
@@ -101,9 +101,6 @@ void printNumber(int num)
 		num = mod(num,mask);
 		interrupt(0x10, 0xE*256+currDigit+48, 0, 0, 0);
 	}while(num!=0);
-
-	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return	
 }
 
 

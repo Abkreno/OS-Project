@@ -64,8 +64,6 @@ main( void ) {
     } else if(equals(command,"dir\0")){
 
       interrupt(0x21,2,directory,2,0);
-      i = 0 ;
-      j = 0 ;
 
       for (i = 0; i < 16; i++){
         if(directory[i*32] != 0x00) {
@@ -78,9 +76,15 @@ main( void ) {
 
           interrupt(0x21,0,dirFileName,0,0);
           interrupt(0x21,10,0,0,0);
+          interrupt(0x21,0,"Sectors: ",0,0);
+          interrupt(0x21,11,j-6,0,0);
+          interrupt(0x21,10,0,0);
+          interrupt(0x21,0,"Size: ",0,0);
           interrupt(0x21,11,(j-6)*512,0,0);
+          interrupt(0x21,0," Bytes",0,0);
+          interrupt(0x21,10,0,0);
           interrupt(0x21,10,0,0,0);
-          
+
           clearBuffer(dirFileName,6);
 
 
