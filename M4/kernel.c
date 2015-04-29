@@ -1,4 +1,5 @@
 void printString(char*);
+void copyMessageToStdout(char*);
 void printChar(int);
 void readString(char*);
 void readSector(char*, int);
@@ -14,6 +15,7 @@ int div(int, int);
 int mod(int, int);
 
 char line[82];
+char stdout[81];
 char buffer[13312]; /*this is the maximum size of a file*/
 char sector[512]; // temp array to read sectors on
 char directory[512];
@@ -258,8 +260,8 @@ void deleteFile(char* name)
 		}
 	};
 	if(flag==0){
-		//TODO set an error message here or there !
-		printString("Hello\0");
+		printString(stdout);
+		println();
 		return;
 	}
 	//the file is found , set the first byte to 0x00
@@ -322,6 +324,7 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 	}else if(ax == 6){
 		writeSector(bx,cx);
 	}else if(ax == 7){
+		copyMessageToStdout(dx);
 		deleteFile(bx);
 	}else if(ax == 8){
 		writeFile(bx,cx,dx);
@@ -331,6 +334,14 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		printString("Error AX value should be < 11\0");
 	}
 }
+
+void copyMessageToStdout(char* message){
+  int i;
+  for (i = 0; message[i] != '\0'; i++){
+    stdout[i] = message[i];
+  };
+}
+
 
 int div(int a, int b)
 {
