@@ -1,6 +1,6 @@
 void printString(char*);
 void copyMessageToStdout(char*);
-void printChar(int);
+void printNumber(int);
 void readString(char*);
 void readSector(char*, int);
 void writeSector(char*, int);
@@ -47,7 +47,7 @@ main( void )
 	// makeInterrupt21();
 	// interrupt(0x21, 4, "tstpr2\0", 0x2000, 0);
 	// while(1);
-
+	
 	makeInterrupt21();
 	interrupt(0x21,4,"shell\0",0x2000,0);
 
@@ -87,12 +87,23 @@ void println()
 	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
 }
 
-void printChar(int c)
+void printNumber(int num)
 {
-	int i;
-	interrupt(0x10, 0xE*256+c+48, 0, 0, 0);
+	int currDigit,mask,i;
+	do{
+		i = num;
+		mask = 1;
+		while(i>9){
+			i = div(i,10);
+			mask = mask*10;
+		}
+		currDigit = div(num,mask);
+		num = mod(num,mask);
+		interrupt(0x10, 0xE*256+currDigit+48, 0, 0, 0);
+	}while(num!=0);
+
 	interrupt(0x10, 0xE*256+0xa, 0, 0, 0); //line feed "new line"
-	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return
+	interrupt(0x10, 0xE*256+0xd, 0, 0, 0); //carriage return	
 }
 
 
