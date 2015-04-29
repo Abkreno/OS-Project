@@ -1,11 +1,13 @@
 int equals(char*,char*);
 void clearBuffer(char* buffer, int length);
 void copyMessageToStdout(char*);
+int div(int a, int b);
 char command[81];
 char argPtr1[81];
 char argPtr2[81];
 char stdout[81];
 char file[13312];
+int sectors ;
 
 main( void ) {
   int i,j;
@@ -49,7 +51,8 @@ main( void ) {
     } else if(equals(command,"copy\0")){ //copy File
       //TODO Print a message if file not found
       interrupt(0x21,3,argPtr1,file,0); //reading the file in buffer
-      interrupt(0x21,8,argPtr2,file,1); //FIXME the third parameter should be # of sectors ??
+      sectors = calculateSectors(file);
+      interrupt(0x21,8,argPtr2,file,sectors); //FIXME the third parameter should be # of sectors ??
     } else{
       interrupt(0x21,0,"command not found\0",0,0);
       interrupt(0x21,10,0,0,0);
@@ -61,6 +64,12 @@ main( void ) {
 
   }
 
+}
+
+int calculateSectors(char* buffer){
+  int i = 0 ;
+  while(buffer[i++]!='\0');
+  return div(i,512);
 }
 
 void clearBuffer(char* buffer, int length){
@@ -87,4 +96,12 @@ int equals(char* str1 , char* str2)
 		if(str1[i++] == '\0')
 			return 1;
 	}
+}
+
+int div(int a, int b)
+{
+    int res;
+    for (res = 0; a >= b; a -= b, res++);
+
+    return res;
 }
