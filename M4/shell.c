@@ -69,7 +69,7 @@ main( void ) {
 int calculateSectors(char* buffer){
   int i = 0 ;
   while(buffer[i++]!='\0');
-  return div(i,512);
+  return div(i,512) + 1;
 }
 
 void clearBuffer(char* buffer, int length){
