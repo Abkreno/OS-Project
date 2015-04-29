@@ -344,8 +344,10 @@ void handleInterrupt21(int ax, int bx, int cx, int dx)
 		writeFile(bx,cx,dx);
 	}else if (ax == 10) {
 		println();
+	}else if (ax == 11) {
+		printNumber(bx);
 	}else{
-		printString("Error AX value should be < 11\0");
+		printString("Error AX value should be < 12\0");
 	}
 }
 
