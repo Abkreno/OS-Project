@@ -232,7 +232,7 @@ void writeFile(char* name, char* buffer, int secNum)
 	}
 	// If there is no sectors free for our file
 	if(j < secNum){
-		printString("Error , you don't have any free space\0");
+		printString(name);
 		println();
 		return;
 	}

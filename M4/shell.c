@@ -5,6 +5,7 @@ int div(int a, int b);
 char command[81];
 char argPtr1[81];
 char argPtr2[81];
+char stdin[81];
 char stdout[81];
 char file[13312];
 char directory[512];
@@ -92,6 +93,26 @@ main( void ) {
     	};
 
 
+
+    } else if(equals(command,"create\0")){
+      i = 0;
+      while(1){
+        interrupt(0x21,1,stdin,0,0,0);
+        
+        for(j = 0;stdin[j]!='\0';j++){
+          file[i++] = stdin[j];
+        }
+        file[i++] = 0xa; //new line
+        file[i++] = 0xd; //carriage return
+        
+        clearBuffer(stdin,81);
+        if(j<=1){
+          file[i] = 0x00;
+          break;
+        }
+      }
+    
+      interrupt(0x21,8,argPtr1,file,div(i,512)+1);
 
     } else{
 
