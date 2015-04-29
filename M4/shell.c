@@ -69,15 +69,17 @@ main( void ) {
 
       for (i = 0; i < 16; i++){
         if(directory[i*32] != 0x00) {
-      		for (j = 0; directory[(i*32)+j]!='\0'; j++){
+      		for (j = 0; directory[(i*32)+j]!='\0' && j < 6; j++){
             dirFileName[j] = directory[(i*32)+j];
       		};
 
-          dirFileName[j] = '\0';
+          dirFileName[j++] = '\0';
 
           interrupt(0x21,0,dirFileName,0,0);
           interrupt(0x21,10,0,0,0);
+          
           clearBuffer(dirFileName,6);
+
 
         }
     	};
